@@ -1,5 +1,5 @@
 <template>
-    <el-menu id="leftBar" >
+    <el-menu id="bar-left" >
         <el-menu-item v-for="item of leftDatas.data" :key="item.code" >
             <i class="el-icon-s-order"></i>
             <span>{{item.text}}</span>
@@ -31,7 +31,7 @@ export default {
 }
 </script>
 <style scoped>
-    #leftBar{
+    #bar-left{
         width: 100%;
         border: none
     }

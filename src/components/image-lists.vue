@@ -1,9 +1,9 @@
 <template>
-    <div class="rightList">
-        <div class="aList"><a href="#">数据源</a> / <a href="#">全部数据源</a></div>
-        <ul class="rightUl"  v-for="item in rightDatas.data" :key="item.code">
-            <p class="imgesTitile">{{item.text}}</p>
-            <li class="rightLi" v-for="itemChild of item.childList" :key="itemChild.code">
+    <div class="list-right">
+        <div class="list-a"><a href="#">数据源</a> / <a href="#">全部数据源</a></div>
+        <ul class="ul-right"  v-for="item in rightDatas.data" :key="item.code">
+            <p class="imges-titile">{{item.text}}</p>
+            <li class="li-right" v-for="itemChild of item.childList" :key="itemChild.code">
                 <img :src="itemChild.avatar"/><br />
                 <span>{{itemChild.text}}</span>
             </li>
@@ -18,13 +18,13 @@ export default {
 </script>
 
 <style scoped>
-    .rightUl{
+    .ul__right{
         list-style: none;
     }
-    .imgesTitile{
+    .imges-titile{
         margin: 10px 0px;
     }
-    .rightLi{
+    .li-right{
         display: inline-block;
         margin-right: 16px;
         margin-bottom: 10px;
@@ -32,12 +32,12 @@ export default {
         background:#FFFFFF;
         border:1px solid #E4E4E4;
     }
-    .rightList{
+    .list-right{
         display: flex;
         flex-direction: column;
         color: #626C7F;
     }
-    .aList{margin-bottom: 28px;}
-    .aList a{text-decoration: none;color: #626C7F;}
+    .list-a{margin-bottom: 28px;}
+    .list-a a{text-decoration: none;color: #626C7F;}
     a:focus{color: blue}
 </style>
