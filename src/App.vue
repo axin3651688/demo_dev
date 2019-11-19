@@ -24,7 +24,7 @@
 
 <script>
 import RightImages from './components/image-lists.vue'
-import LeftBar from './components/navigation.vue'
+import LeftBar from './components/aside-navigation.vue'
 import LeftInput from './components/aside-input.vue'
 import datas from './components/data.js'
 export default {
