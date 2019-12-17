@@ -1,28 +1,30 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-  </div>
+    <div>
+        <PCElement class="pc"/>
+        <PhoneElement class="mobile"/>
+    </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import PCElement from "./main/pc-app"
+import PhoneElement from "./main/phone-app"
 
 export default {
-  name: 'app',
-  components: {
-    HelloWorld
-  }
+    components:{
+        "PCElement": PCElement,
+        "PhoneElement": PhoneElement
+    }
 }
 </script>
 
-<style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+<style scoped>
+  @media (max-width: 1080px) {
+    .pc{display: none !important;}
+    .mobile{display: block !important;}
+  }
+  @media (min-width: 1081px) {
+    .pc{display: block !important;}
+    .mobile{display: none !important;}
+    
+  }
 </style>
