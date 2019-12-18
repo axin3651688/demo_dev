@@ -24,7 +24,6 @@ export default {
   }
   @media (min-width: 1081px) {
     .pc{display: block !important;}
-    .mobile{display: none !important;}
-    
+    .mobile{display: none !important;}  
   }
 </style>

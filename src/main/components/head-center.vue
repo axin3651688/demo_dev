@@ -9,15 +9,14 @@
             产品列表<i class="el-icon-arrow-down el-icon--right"></i>
           </span>
           <el-dropdown-menu slot="dropdown" >
-            <el-dropdown-item v-for="item of datas" :key="item.id" v-html="item.innerHtml" :class="item.selfClass" item.attribute :disabled="getDisabled(item.id)"></el-dropdown-item>
-            <!-- <el-dropdown-item divided disabled><h2>产品列表</h2></el-dropdown-item>
-            <el-dropdown-item><a href="./design/login">设计器</a></el-dropdown-item>
-            <el-dropdown-item><a href="./portal/login-portal">租户门户</a></el-dropdown-item>
-            <el-dropdown-item><a href="./single-console">租户门户后台管理</a></el-dropdown-item>
-            <el-dropdown-item><a href="./platform-console">产品后台管理</a></el-dropdown-item>
-            <el-dropdown-item divided disabled><h2>轻应用列表</h2></el-dropdown-item>
-            <el-dropdown-item><a href="./attendance">考勤</a></el-dropdown-item>
-            <el-dropdown-item><a href="#">云智囊Web版</a></el-dropdown-item> -->
+            <el-dropdown-item 
+              v-for="item of datas" 
+              :key="item.id" 
+              v-html="item.innerHtml" 
+              :class="item.selfClass" 
+              item.attribute 
+              :disabled="getDisabled(item.id)">
+              </el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
       </span>
@@ -95,13 +94,13 @@ export default {
     margin-left: 2em;
   }
   .head__list a{
-    font-size: 1.5em;
+    font-size: 1.3em;
     text-decoration: none;
     color: #666;
   }
   .el-dropdown{
     color: #666;
-    font-size: 1.5em;
+    font-size: 1.3em;
   }
   
   .item-a >>> a{
