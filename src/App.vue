@@ -17,7 +17,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
   @media (max-width: 1080px) {
     .pc{display: none !important;}
     .mobile{display: block !important;}

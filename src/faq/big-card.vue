@@ -3,7 +3,7 @@
     <a href="http://121.199.47.77/design/login"><img  src="https://wt-box.worktile.com/public/d57c4463-0c4b-4c4a-8831-055f89665735" alt="图片加载中" title="安徽经邦" class="card--image"></a>
     <div class="card-main">
       <div class="card--title">
-        <h2>安徽经邦设计器</h2>
+        <a href="http://121.199.47.77/design/login"><h2>安徽经邦设计器</h2></a>
         <div class="writer--box">
           <img src="https://wt-avatars.oss.aliyuncs.com/40/b6bd371c9f2148da8330ba665e3350a9.jpg" alt="用户" class="user--image">
           <p class="user--name">安徽经邦</p>
@@ -11,22 +11,31 @@
         </div>
       </div>
       <div class="card--bottom">
-        <a>设计器</a>
+        <a href="http://121.199.47.77/design/login">设计器</a>
       </div>
     </div>
   </div>
 </template>
 
 <style scoped>
+  a{
+    text-decoration: none;
+  }
   .card{
     width: 100%;
+    box-shadow: 0 0 1px 0.5px #E2E2E2;
     border: 1px solid #E1E1E1;
+    border-radius: 5px;
+  }
+  .card--image{
+    width: 100%;
     border-radius: 5px;
   }
   .user--image{
     border-radius: 50%;
   }
   h2{
+    font-size: 18px;
     margin: 10px 0;
     color: #444;
   }
@@ -43,7 +52,7 @@
     font-size: 14px;
   }
   .user--name{
-    margin: 0px 50px 0 20px;
+    margin: 0px 30px 0 15px;
   }
   .card--bottom{
     margin-top: 20px;
@@ -55,21 +64,14 @@
   }
   .card--bottom a{
     color: #69D0D1;
-    text-decoration: none;
     font-size: 14px;
   }
   @media (max-width: 1080px) {
     .pc{display: none !important;}
     .mobile{display: block !important;}
-    .card--image{
-      width: 100%;
-    }
   }
   @media (min-width: 1081px) {
     .pc{display: block !important;}
     .mobile{display: none !important;} 
-    .card--image{
-      width: 100%;
-    }
   }
 </style>

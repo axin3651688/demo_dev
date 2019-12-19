@@ -45,62 +45,21 @@
                     <img src="https://cdn.worktile.com/assets/images/next/home/home-banner.svg?v=8.0.1+2019112701" alt="图片加载中" class="main--bottom__image">
                 </div>
             </el-main>
-            <div class="footer">
-                <el-collapse v-model="activeNames" @change="handleChange">
-                    <el-collapse-item title="产品" name="1">
-                        <div v-for="item of ulArray1" :key="item.index" v-html="item.name" class="list"></div>
-                    </el-collapse-item><el-collapse-item title="轻应用" name="2">
-                        <div v-for="item of ulArray2" :key="item.index" v-html="item.name" class="list"></div>
-                    </el-collapse-item><el-collapse-item title="公司" name="3">
-                        <div v-for="item of ulArray3" :key="item.index" v-html="item.name" class="list"></div>
-                    </el-collapse-item><el-collapse-item title="联系我们" name="4">
-                        <div><p>+86 0551-xxxxxxx</p></div>
-                    </el-collapse-item>
-                </el-collapse>
-            </div>
+            <FootCenter />
         </el-container>
     </div>
 </template>
 
 <script>
+import FootCenter from "./components/foot.vue"
 export default {
-  data() {
-    return {
-        inputText: '',
-        ulArray1:[
-            {
-                name: "<a href='./design/login'>设计器</a>"
-            },{
-                name: "<a href='./portal/login-portal'>租户门户</a>"
-            },{
-                name: "<a href='./single-console'>租户门户后台管理</a>"
-            },{
-                name: "<a href='./platform-console'>产品后台管理</a>"
-            }
-        ],
-        ulArray2:[
-            {
-                name: "<a href='./attendance'>考勤</a>"
-            },{
-                name: "<a href='#'>云智囊Web版</a>"
-            }
-        ],
-        ulArray3:[
-            {
-                name: "<a href='#'>关于我们</a>"
-            },{
-                name: "<a href='#'>媒体报道</a>"
-            },{
-                name: "<a href='#'>联系我们</a>"
-            },{
-                name: "<a href='#'>隐私声明</a>"
-            },{
-                name: "<a href='#'>服务条款</a>"
-            },{
-                name: "<a href='#'>加入我们</a>"
-            }
-        ],
-    }
+    data() {
+        return {
+            inputText: '',
+        }
+    },
+  components: {
+    "FootCenter":FootCenter
   }
 }
 </script>
@@ -148,17 +107,5 @@ export default {
     }
     .main--bottom__image{
         width: 100%
-    }
-    .footer{
-        width: 95%;
-        margin: 0 auto;
-    }
-    .list >>> a{
-        color: #999;
-        line-height: 2em;
-        text-decoration: none;
-    }
-    .list p{
-        color: #999;
     }
 </style>

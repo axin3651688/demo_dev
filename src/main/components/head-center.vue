@@ -80,7 +80,7 @@ export default {
 
 <style scoped>
   .logo{
-    width: 20em;
+    width: 200px;
   }
   .head--center{
     width: 80%;
