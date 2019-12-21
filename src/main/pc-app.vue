@@ -50,7 +50,6 @@ export default {
 </script>
 
 <style scoped>
-  *{padding: 0;margin: 0;}
   .main{
     display: flex;
     flex-direction: row;

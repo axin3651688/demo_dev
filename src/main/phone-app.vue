@@ -5,7 +5,7 @@
                 <img src="http://www.cnbisoft.com/images/index/logo.png" alt="图片加载中" title="安徽经邦" class="logo" >
                 <el-menu mode="horizontal" id="list">
                 <el-submenu >
-                    <el-menu-item><a href="http://www.cnbisoft.com/index_2.html">首页</a></el-menu-item>
+                    <el-menu-item><router-link to="/">首页</router-link></el-menu-item>
                     <span slot="title"><i class="el-icon-more"></i></span>
                     <el-menu
                     class="el-menu-vertical-demo"
@@ -23,7 +23,7 @@
                         <el-menu-item ><a href="#">云智囊Web版</a></el-menu-item>
                     </el-submenu>
                     </el-menu>
-                    <el-menu-item><a href="#">帮助中心</a></el-menu-item>
+                    <el-menu-item><router-link to="/faq">帮助中心</router-link></el-menu-item>
                     <el-menu-item style="padding: 0 20px;height:3em;"><el-button size="small">登录</el-button></el-menu-item>
                 </el-submenu>                
                 </el-menu>

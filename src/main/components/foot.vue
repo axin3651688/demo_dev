@@ -28,7 +28,7 @@
                 </el-collapse-item><el-collapse-item title="公司" name="3">
                     <div v-for="item of ulArray3" :key="item.index" v-html="item.name" class="mobile--list"></div>
                 </el-collapse-item><el-collapse-item title="联系我们" name="4">
-                    <div><p>+86 0551-xxxxxxx</p></div>
+                    <div class="mobile--list"><p>+86 0551-xxxxxxx</p></div>
                 </el-collapse-item>
             </el-collapse>
         </div>
@@ -70,40 +70,45 @@ export default {
         justify-content: space-between;
     }
     ul{
-        padding: 0 2em;
+        padding: 0 20px;
     }
     li{
         list-style: none;
     }
     h2{
         color: #555;
+        font-size: 20px;
     }
     p{
-        color: #999
+        color: #999;
+        font-size: 12px;
     }
     img{
-        margin: 0 0.5em;
+        margin: 0 5px;
     }
     .pc--list >>> a{
         color: #999;
-        line-height: 3em;
+        line-height: 30px;
         text-decoration: none;
+        font-size: 12px;
     }
     .footer{
         width: 95%;
         margin: 0 auto;
     }
+    .mobile--list{
+        padding: 0 25px;
+        color: #999;
+    }
     .mobile--list >>> a{
         color: #999;
-        line-height: 2em;
+        line-height: 20px;
         text-decoration: none;
-    }
-    .mobile--list p{
-        color: #999;
     }
     @media (max-width: 1080px) {
         .pc{display: none !important;}
         .mobile{display: block !important;}
+        
     }
     @media (min-width: 1081px) {
         .pc{display: flex !important;}

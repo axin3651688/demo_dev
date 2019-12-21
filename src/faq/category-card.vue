@@ -21,7 +21,7 @@
         <li v-for="item of DataList" :key="item.value"><a :href="item.html">{{item.text}}</a></li>
       </el-collapse-item>
     </el-collapse>
-    <img  src="https://wt-box.worktile.com/public/d57c4463-0c4b-4c4a-8831-055f89665735" alt="图片加载中" title="安徽经邦" class="card--image">
+    <img  src="https://wt-box.worktile.com/public/d57c4463-0c4b-4c4a-8831-055f89665735" alt="图片加载中" title="安徽经邦" class="card--image pc">
   </div>
 </template>
 
@@ -85,6 +85,7 @@ export default {
     float: left;
     width: 200px;
     height: 174px;
+    margin-bottom: 20px;
   }
   ul{    
     padding: 0;
@@ -99,6 +100,10 @@ export default {
   a{
     text-decoration: none;
     color: #666666;
+  }
+  .card--image{
+    margin: 0 10px 15px;
+    width: 278px;
   }
   .el-collapse-item >>> .el-collapse-item__header{
     padding: 0 20px;
@@ -132,10 +137,6 @@ export default {
       float: left;
       margin-left: 8px;
     }
-    .card--image{
-      margin-top: 20px;
-      width: 100%;
-    }
   }
   @media (min-width: 1081px) {
     .pc{display: block !important;}
@@ -155,9 +156,6 @@ export default {
       width: 60%;
       float: left;
     }
-    .card--image{
-      margin: 20px 10px 15px 10px;
-      width: 278px;
-    }
+    
   }
 </style>

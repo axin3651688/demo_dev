@@ -3,7 +3,7 @@
     <img src="http://www.cnbisoft.com/images/index/logo.png" alt="图片加载中" title="安徽经邦" class="logo" />
     <div class="head__list pc">
       <span>
-        <a href="http://www.cnbisoft.com/index_2.html">首页</a>
+        <router-link to="/">首页</router-link>
       </span>
       <span>
         <el-dropdown>
@@ -24,7 +24,7 @@
         </el-dropdown>
       </span>
       <span>
-        <a href="#">帮助中心</a>
+        <router-link to="/faq">帮助中心</router-link>
       </span>
       <span>
         <el-button type="primary">登录</el-button>
