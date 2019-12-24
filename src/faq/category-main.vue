@@ -12,7 +12,7 @@
               @click.native="showContent(item)"
             >{{item.title}}</router-link>
           </div>
-          <div class="card--update">
+          <div>
             <span class="card--update__user">{{item.updateUserName}}</span>
             <span class="card--updateTime">{{item.updateTime}}</span>
           </div>
@@ -48,7 +48,7 @@
           <span class="card--updateTime">{{item.updateTime}}</span>
         </div>
         <div class="card--text">
-          <span>{{item.content}}</span>
+          <span>{{item.contentText}}</span>
         </div>
         <div class="card--bottom">
           <router-link
@@ -82,6 +82,7 @@
 <script>
 require("../api/date.js");
 import { FindAll } from "../api/get-datas";
+import bus from "../api/bus";
 export default {
   data() {
     return {
@@ -89,19 +90,22 @@ export default {
       nowPageList: [],
       pageCount: 0,
       nowPage: 1,
-      categoryList: [],
-      isAll: true,
-      categoryTextList: []
+      cardListString: ""
     };
   },
   methods: {
-    // 获取数据按时间顺序放入数组
+    // 获取数组
     getDatas() {
+      bus.$on("str", data => {
+        this.cardListString = data;
+        window.console.log(data);
+      });
       FindAll().then(res => {
-        // window.console.log(res.data.data);
         let dataList = res.data.data;
         for (let i in dataList) {
-          this.cardList.push(dataList[i]);
+          if (dataList[i].categoryText == this.cardListString) {
+            this.cardList.push(dataList[i]);
+          }
         }
         let type = {};
         let count = this.cardList.length - 1;
@@ -122,8 +126,7 @@ export default {
             this.cardList[i].content
           );
         }
-        this.getcategoryTextList();
-        this.pageCount = count + 1;
+        this.pageCount = this.cardList.length;
         let num = 12;
         for (let i = 0; i < num; i++) {
           if (i == this.cardList.length) {
@@ -132,35 +135,6 @@ export default {
           this.nowPageList.push(this.cardList[i]);
         }
       });
-    },
-    getSamllText(str) {
-      str = str.replace(/<br>/gi, "\n");
-      str = str.replace(/<xml>[\s\S]*?<\/xml>/gi, "");
-      str = str.replace(/<style>[\s\S]*?<\/style>/gi, "");
-      str = str.replace(/<\/?[^>]*>/g, "");
-      str = str.replace(/[ | ]*\n/g, "\n");
-      str = str.replace(/&nbsp;/gi, " ");
-      return str;
-    },
-    //查分类
-    getcategoryTextList() {
-      this.categoryTextList.push(this.cardList[0].categoryText);
-      for (let i in this.cardList) {
-        for (let j in this.categoryTextList) {
-          if (this.cardList[i].categoryText == this.categoryTextList[j]) {
-            break;
-          }
-          if (j == this.categoryTextList.length - 1) {
-            this.categoryTextList.push(this.cardList[i].categoryText);
-          }
-        }
-      }
-      // Bus.$emit('text',this.categoryTextList);
-      window.sessionStorage.categoryTextList = this.categoryTextList;
-    },
-    //按分类查询时
-    setCategory(value) {
-      window.sessionStorage.categoryListString = value;
     },
     //改变页码时
     changeList(e) {
@@ -174,8 +148,18 @@ export default {
         }
         this.nowPageList.push(this.cardList[i]);
       }
+    },
+    getSamllText(str) {
+      str = str.replace(/<br>/gi, "\n");
+      str = str.replace(/<xml>[\s\S]*?<\/xml>/gi, "");
+      str = str.replace(/<style>[\s\S]*?<\/style>/gi, "");
+      str = str.replace(/<\/?[^>]*>/g, "");
+      str = str.replace(/[ | ]*\n/g, "\n");
+      str = str.replace(/&nbsp;/gi, " ");
+      return str;
     }
   },
+
   created() {
     this.getDatas();
   }
@@ -207,15 +191,6 @@ a {
 .card--update__user {
   color: #cacfd3;
   padding-right: 8px;
-  width: 70px;
-  overflow: hidden;
-  text-overflow: ellipsis; 
-  white-space: nowrap;
-  display: inline-block;
-}
-.card--update{
-  display: flex;
-  align-items: center;
 }
 .card--text {
   color: gray;

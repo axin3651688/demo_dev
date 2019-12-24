@@ -17,9 +17,25 @@ export default new Router({
       path : '/faq',
       name : 'faq-homepage',
       meta: {
-        title: '帮助中心'
+        title: '帮助中心',
       },
-      component :  () => import("../faq/faq-homepage")
+      component :  () => import("../faq/faq-homepage"),
+    },
+    {
+      path : '/faq/category',
+      name : 'faq-category',
+      meta: {
+        title: '分类'
+      },
+      component :  () => import("../faq/faq-category")
+    },
+    {
+      path: '/faq/content',
+      name: 'faq-context',
+      meta: {
+        title: '正文'
+      },
+      component: () => import("../faq/faq-context")
     }
 ],
     mode: "history"

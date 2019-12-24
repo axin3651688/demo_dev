@@ -11,151 +11,153 @@
       <div class="list-right">
         <el-scrollbar style="height:100%;">
           <ul>
-            <li v-for="item of DataList" :key="item.value"><a :href="item.html">{{item.text}}</a></li>
-          </ul>  
-        </el-scrollbar>        
+            <li v-for="item of DataList" :key="item.value" :title="item">
+              <router-link :to="{path:'/faq/category',query: {value: item}}">{{item}}</router-link>
+            </li>
+          </ul>
+        </el-scrollbar>
       </div>
     </div>
     <el-collapse v-model="activeNames" @change="handleChange" class="mobile">
       <el-collapse-item title="分类">
-        <li v-for="item of DataList" :key="item.value"><a :href="item.html">{{item.text}}</a></li>
+        <li v-for="item of DataList" :key="item.value">
+          <a @click="showCategory">{{item}}</a>
+        </li>
       </el-collapse-item>
     </el-collapse>
-    <img  src="https://wt-box.worktile.com/public/d57c4463-0c4b-4c4a-8831-055f89665735" alt="图片加载中" title="安徽经邦" class="card--image pc">
+    <img
+      src="https://wt-box.worktile.com/public/d57c4463-0c4b-4c4a-8831-055f89665735"
+      alt="图片加载中"
+      title="安徽经邦"
+      class="card--image pc"
+    />
   </div>
 </template>
 
 <script>
 export default {
-  data(){
+  data() {
     return {
-      CatagoryKey:"",
-      DataList: [
-        {text: 'hehe',html: 'http://www.baidu.com'},
-        {text: '百度',html: 'http://www.baidu.com'},
-        {text: 'hehe',html: 'http://www.baidu.com'},
-        {text: '百度',html: 'http://www.baidu.com'},
-        {text: 'hehe',html: 'http://www.baidu.com'},
-        {text: '百度',html: 'http://www.baidu.com'},
-        {text: 'hehe',html: 'http://www.baidu.com'},
-        {text: '百度',html: 'http://www.baidu.com'},
-        {text: 'hehe',html: 'http://www.baidu.com'},
-        {text: '百度',html: 'http://www.baidu.com'},
-        {text: 'hehe',html: 'http://www.baidu.com'},
-        {text: '百度',html: 'http://www.baidu.com'},
-        {text: 'hehe',html: 'http://www.baidu.com'},
-        {text: '百度',html: 'http://www.baidu.com'},
-        {text: 'hehe',html: 'http://www.baidu.com'},
-        {text: '百度',html: 'http://www.baidu.com'},
-        {text: 'hehe',html: 'http://www.baidu.com'},
-        {text: '百度',html: 'http://www.baidu.com'},
-        {text: 'hehe',html: 'http://www.baidu.com'},
-        {text: '百度',html: 'http://www.baidu.com'},
-        {text: 'hehe',html: 'http://www.baidu.com'},
-        {text: '百度',html: 'http://www.baidu.com'},
-      ]
-    }
+      CatagoryKey: "",
+      DataList: []
+    };
+  },
+  mounted: function() {
+    let str = window.sessionStorage.categoryTextList;
+    this.DataList = str.split(",");
   }
-}
+};
 </script>
 
 <style scoped>
-  
-  .found{
-    margin: 15px 10px;
-    height: 40px;
+.found {
+  margin: 15px 10px;
+  height: 40px;
+}
+.found >>> .el-input__inner {
+  height: 36px;
+  line-height: 36px;
+}
+.list {
+  border-top: 1px solid #e1e1e1;
+  font-size: 14px;
+  margin: 0 10px;
+}
+.list-left {
+  float: left;
+  width: 59px;
+}
+.list-left p {
+  float: right;
+}
+.list-right {
+  float: right;
+  width: 200px;
+  height: 174px;
+  margin-bottom: 20px;
+}
+ul {
+  padding: 0;
+}
+li {
+  list-style: none;
+  margin-bottom: 15px;
+}
+a {
+  text-decoration: none;
+  color: #666666;
+}
+.card--image {
+  margin: 0 10px 15px;
+  width: 278px;
+}
+.el-collapse-item >>> .el-collapse-item__header {
+  padding: 0 20px;
+  background-color: #f9f9f9;
+}
+.el-collapse-item >>> .el-collapse-item__content {
+  padding: 0 50px;
+  background-color: #f9f9f9;
+}
+.list-right >>> .el-scrollbar__wrap {
+  overflow-x: hidden;
+}
+@media (max-width: 1080px) {
+  .pc {
+    display: none !important;
   }
-  .found >>> .el-input__inner{
-    height: 36px;
-    line-height: 36px;
+  .mobile {
+    display: block !important;
   }
-  .list{
-    border-top: 1px solid #E1E1E1;
-    font-size: 14px;
-    margin: 0 10px;
+  .card {
+    margin-top: 10px;
+    width: 100%;
+    border: 1px solid #e1e1e1;
+    border-radius: 5px;
+    padding: 20px 0 10px;
+    box-shadow: 0 0 1px 0.5px #e2e2e2;
   }
-  .list-left{
+  .el-button {
+    font-weight: 500;
+    float: right;
+    margin-right: 8px;
+  }
+  .el-input {
+    width: 60%;
     float: left;
-    width: 59px;
+    margin-left: 8px;
   }
-  .list-left p{
+}
+@media (min-width: 1081px) {
+  .pc {
+    display: block !important;
+  }
+  .mobile {
+    display: none !important;
+  }
+  .card {
+    width: 100%;
+    height: 400px;
+    border: 1px solid #e1e1e1;
+    border-radius: 5px;
+    box-shadow: 0 0 1px 0.5px #e2e2e2;
+  }
+  .el-button {
+    font-weight: 500;
     float: right;
   }
-  .list-right{
+  .el-input {
+    width: 60%;
     float: left;
-    width: 200px;
-    height: 174px;
-    margin-bottom: 20px;
   }
-  ul{    
-    padding: 0;
-  }
-  li{
-    list-style: none;
+  li {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    height: 16px;
+    width: 66px;
     float: left;
-    width: 33%;
-    text-align: center;
-    margin-bottom: 15px;
+    line-height: 20px;
   }
-  a{
-    text-decoration: none;
-    color: #666666;
-  }
-  .card--image{
-    margin: 0 10px 15px;
-    width: 278px;
-  }
-  .el-collapse-item >>> .el-collapse-item__header{
-    padding: 0 20px;
-    background-color: #F9F9F9;
-  }
-  .el-collapse-item >>> .el-collapse-item__content{
-    padding: 0 50px;
-    background-color: #F9F9F9;
-  }
-  .list-right >>> .el-scrollbar__wrap {
-    overflow-x: hidden;
-  }
-  @media (max-width: 1080px) {
-    .pc{display: none !important;}
-    .mobile{display: block !important;}
-    .card{
-      margin-top: 10px;
-      width: 100%;
-      border: 1px solid #E1E1E1;
-      border-radius: 5px;
-      padding: 20px 0 10px;
-      box-shadow: 0 0 1px 0.5px #E2E2E2;
-    }
-    .el-button{
-      font-weight: 500;
-      float: right;
-      margin-right: 8px;
-    }
-    .el-input{
-      width: 60%;
-      float: left;
-      margin-left: 8px;
-    }
-  }
-  @media (min-width: 1081px) {
-    .pc{display: block !important;}
-    .mobile{display: none !important;}
-    .card{
-      width: 100%;
-      height: 400px;
-      border: 1px solid #E1E1E1;
-      border-radius: 5px;
-      box-shadow: 0 0 1px 0.5px #E2E2E2;
-    }
-    .el-button{
-      font-weight: 500;
-      float: right;
-    }
-    .el-input{
-      width: 60%;
-      float: left;
-    }
-    
-  }
+}
 </style>
