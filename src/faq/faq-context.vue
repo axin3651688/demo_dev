@@ -6,13 +6,13 @@
         <el-col :span="16">
           <div>
             <div class="content--box">
-              <h2 v-html="title"></h2>
+              <h2 v-html="dataList.title"></h2>
               <div class="updata--box">
-                <span v-html="updateUserName" class="username--box"></span>
-                <span v-html="updateTime"></span>
+                <span v-html="dataList.updateUserName" class="username--box"></span>
+                <span v-html="dataList.updateTime"></span>
               </div>
               <el-divider></el-divider>
-              <p v-html="content"></p>
+              <p v-html="dataList.content"></p>
             </div>
           </div>
         </el-col>
@@ -23,26 +23,21 @@
       <div class="mobile mobile--content">
         <CategoryCard />
         <div class="content--box">
-          <h2 v-html="title"></h2>
+          <h2 v-html="dataList.title"></h2>
           <div class="updata--box">
-            <span v-html="updateUserName" class="username--box"></span>
-            <span v-html="updateTime"></span>
+            <span v-html="dataList.updateUserName" class="username--box"></span>
+            <span v-html="dataList.updateTime"></span>
           </div>
           <el-divider></el-divider>
-          <p v-html="content"></p>
+          <p v-html="dataList.content"></p>
         </div>
       </div>
-      <div v-for="item of question" :key="item.id" class="question--box">
-        <h2>问题：</h2>
-        <div v-html="item.content"></div>
-        <h2>回复：</h2>
-        <div v-html="item.reply"></div>
-      </div>
-      <el-form>
+      <el-form
+        :disabled="comment">
         <el-form-item>
           <el-input
             type="textarea"
-            placeholder="请输入您的问题"
+            :placeholder="placeholder"
             v-model="questionContent"
             maxlength="500"
             show-word-limit
@@ -54,66 +49,53 @@
           <el-button @click="cleanArea()">重置</el-button>
         </el-form-item>
       </el-form>
+      <FaqQuestion />
     </div>
     <Footer />
   </div>
 </template>
 
 <script>
-import FaqHeader from "./faq-header";
-import CategoryCard from "./category-card";
-import Footer from "@/main/components/foot";
-import { SendQuestion} from "../api/get-datas";//, GetAllQuestion, GetAllReply 
-import { Message } from "element-ui";
+import FaqHeader from "./faq-header"
+import CategoryCard from "./category-card"
+import Footer from "@/main/components/foot"
+import { SendQuestion,FindOne,AddReadCount} from "../api/get-datas"
+import { Message } from "element-ui"
+import bus from '../api/bus'
+import FaqQuestion from './faq-question'
 export default {
   components: {
     FaqHeader: FaqHeader,
     CategoryCard: CategoryCard,
-    Footer: Footer
+    Footer: Footer,
+    FaqQuestion: FaqQuestion
   },
   data() {
     return {
-      content: "",
-      title: "",
-      updateUserName: "",
-      updateTime: "",
-      id: "",
+      dataList: {},
       questionContent: "",
       question: [],
+      comment: false,
+      placeholder: '',
+      id: 0,
+      title: ''
     };
   },
-  mounted: function() {
-    let substance = this.$router.history.current.query;
-    this.content = substance.content;
-    this.title = substance.title;
-    this.updateUserName = substance.username;
-    this.updateTime = substance.time;
-    this.id = substance.id;
-    // GetAllQuestion().then(res => {
-    //   let dataList = res.data.data;
-    //   for (let i in dataList) {
-    //     if (dataList[i].faqId == this.id && dataList[i].status == 2) {
-    //       this.question.push(dataList[i]);
-    //     }
-    //   }
-    // });
-    // GetAllReply().then(res => {
-    //   let dataList = res.data.data;
-    //   for (let i in dataList) {
-    //     for (let j in this.question) {
-    //       if (dataList[i].questionId == this.question[j].id) {
-    //         window.console.log(dataList[i].content);
-    //         this.question[j].reply = dataList[i].content;
-    //       }
-    //     }
-    //   }
-    // });
+  created(){
+    this.id = this.$router.history.current.query.id;
+  },
+  mounted() {
+    this.getData(this.id);
+    bus.$emit("faqId",this.id);
+    AddReadCount(this.id);
   },
   methods: {
     //提交问题
     doSubmit() {
-      if (this.questionContent == "") {
-        Message.error("请输入问题，再提交");
+      let str = this.questionContent.trim();
+      if (str.length == 0) {
+        Message.error("请勿提交空问题");
+        this.cleanArea();
         return;
       }
       SendQuestion(this.questionContent, this.id, this.title).then(res => {
@@ -125,8 +107,24 @@ export default {
         this.cleanArea();
       });
     },
+    //清空输入框
     cleanArea() {
       this.questionContent = "";
+    },
+    //取得当前页的信息
+    getData(id){
+      FindOne(id).then(res => {
+        this.dataList = res.data.data;
+        this.title = this.dataList.title;
+        if(this.dataList.isComment == 1){
+          this.comment = false;
+          this.placeholder = "请输入您的问题";
+        }else{
+          this.comment = true;
+          this.placeholder = "当前评论已关闭";
+        } 
+        return this.comment;
+      })
     }
   }
 };
@@ -149,16 +147,8 @@ export default {
   border: #eeeeee 2px solid;
   padding: 10px;
 }
-.main-box {
-  width: 90%;
-  margin: 20px auto;
-}
 h1 {
   font-size: 24px;
-}
-.question--box{
-  background: #e5e5e5;
-  margin: 10px 0;
 }
 @media (max-width: 1080px) {
   .pc {
@@ -176,6 +166,10 @@ h1 {
   }
   .el-form-item >>> .el-textarea {
     min-width: 300px;
+  }
+  .main-box {
+    width: 90%;
+    margin: 20px auto;
   }
 }
 @media (min-width: 1081px) {

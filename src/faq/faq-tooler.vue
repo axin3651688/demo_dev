@@ -16,7 +16,7 @@
 
 <script>
 import FaqHeader from "./faq-header"
-import CenterContent from "./category-main"
+import CenterContent from "./tool-main"
 import Footer from "@/main/components/foot"
 import bus from '../api/bus'
 export default {
@@ -27,14 +27,16 @@ export default {
   },
   data(){
     return{
-      cardListString: ''
+      cardListString: '',
+      isSearch: 0
     }
   },
   created(){
-    this.cardListString = this.$router.history.current.query.value;
+    this.cardListId = this.$router.history.current.query.value;
+    this.isSearch = this.$router.history.current.query.isSearch;
   },
   mounted(){
-    bus.$emit('str',this.cardListString);
+    bus.$emit('str',[this.cardListId,this.isSearch]);
   }
 }
 </script>

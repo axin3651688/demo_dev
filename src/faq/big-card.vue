@@ -1,9 +1,9 @@
 <template>
-  <div class="card">
-    <a href="http://121.199.47.77/design/login"><img  src="https://wt-box.worktile.com/public/d57c4463-0c4b-4c4a-8831-055f89665735" alt="图片加载中" title="安徽经邦" class="card--image"></a>
+  <div class="card" v-if="dataList.length == 0">
+    <a href="http://121.199.47.77/design/login"><img  src="../assets/titleImg.svg" alt="图片加载中" title="安徽经邦" class="card--image"></a>
     <div class="card-main">
       <div class="card--title">
-        <a href="http://121.199.47.77/design/login"><h2>安徽经邦设计器</h2></a>
+        <a href="http://121.199.47.77/design/login"><h2>设计器</h2></a>
         <div class="writer--box">
           <img src="https://wt-avatars.oss.aliyuncs.com/40/b6bd371c9f2148da8330ba665e3350a9.jpg" alt="用户" class="user--image">
           <p class="user--name">安徽经邦</p>
@@ -16,6 +16,16 @@
     </div>
   </div>
 </template>
+
+<script>
+export default {
+  data(){
+    return{
+      dataList: []
+    }
+  }
+}
+</script>
 
 <style scoped>
   a{

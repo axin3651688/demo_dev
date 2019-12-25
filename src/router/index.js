@@ -22,12 +22,12 @@ export default new Router({
       component :  () => import("../faq/faq-homepage"),
     },
     {
-      path : '/faq/category',
-      name : 'faq-category',
+      path : '/faq/tooler',
+      name : 'faq-tooler',
       meta: {
-        title: '分类'
+        title: '功能页面'
       },
-      component :  () => import("../faq/faq-category")
+      component :  () => import("../faq/faq-tooler")
     },
     {
       path: '/faq/content',

@@ -1,8 +1,8 @@
 <template>
   <div class="card">
     <div class="found">
-      <el-input placeholder="搜索您的问题..." v-model="CatagoryKey"></el-input>
-      <el-button type="success" size="medium">搜索</el-button>
+      <el-input placeholder="搜索您的问题..." v-model="sreachKey"></el-input>
+      <el-button type="success" size="medium" @click="doSreach">搜索</el-button>
     </div>
     <div class="list pc">
       <div class="list-left">
@@ -11,8 +11,8 @@
       <div class="list-right">
         <el-scrollbar style="height:100%;">
           <ul>
-            <li v-for="item of DataList" :key="item.value" :title="item">
-              <router-link :to="{path:'/faq/category',query: {value: item}}">{{item}}</router-link>
+            <li v-for="item of DataList" :key="item.value" :title="item.text">
+              <router-link :to="{path:'/faq/tooler',query: {value: item.id,isSearch: 0}}">{{item.text}}</router-link>
             </li>
           </ul>
         </el-scrollbar>
@@ -21,7 +21,7 @@
     <el-collapse v-model="activeNames" @change="handleChange" class="mobile">
       <el-collapse-item title="分类">
         <li v-for="item of DataList" :key="item.value">
-          <a @click="showCategory">{{item}}</a>
+          <router-link :to="{path:'/faq/tooler',query: {value: item.id,isSearch: 0}}">{{item.text}}</router-link>
         </li>
       </el-collapse-item>
     </el-collapse>
@@ -35,16 +35,31 @@
 </template>
 
 <script>
+import {FindAllCategory} from "../api/get-datas"
 export default {
   data() {
     return {
-      CatagoryKey: "",
+      sreachKey: "",
       DataList: []
     };
   },
-  mounted: function() {
-    let str = window.sessionStorage.categoryTextList;
-    this.DataList = str.split(",");
+  mounted() {
+    FindAllCategory().then(res => {
+      let dataList = res.data.data;
+      for(let i in dataList){
+        if(dataList[i].faqCount != null && dataList[i].faqCount != 0){
+          this.DataList.push(dataList[i]);
+        }
+      }
+    })
+  },
+  methods: {
+    doSreach(){
+      this.$router.push({
+        path: '/faq/tooler',
+        query: {value: this.sreachKey,isSearch: 1}
+      })
+    }
   }
 };
 </script>
@@ -71,7 +86,7 @@ export default {
   float: right;
 }
 .list-right {
-  float: right;
+  float: left;
   width: 200px;
   height: 174px;
   margin-bottom: 20px;
@@ -81,7 +96,7 @@ ul {
 }
 li {
   list-style: none;
-  margin-bottom: 15px;
+  margin-bottom: 16px;
 }
 a {
   text-decoration: none;
@@ -137,7 +152,7 @@ a {
   }
   .card {
     width: 100%;
-    height: 400px;
+    height: 398px;
     border: 1px solid #e1e1e1;
     border-radius: 5px;
     box-shadow: 0 0 1px 0.5px #e2e2e2;

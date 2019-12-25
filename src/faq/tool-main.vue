@@ -1,5 +1,9 @@
 <template>
   <div>
+    <div v-if="nowPageList.length == 0" class="data--null">
+      <img src="../assets/none.svg">
+      {{titleString}}
+    </div>
     <el-row :gutter="30" class="pc">
       <el-col :span="8" v-for="item of nowPageList" :key="item.value">
         <div class="faq--card">
@@ -8,8 +12,10 @@
           </a>
           <div class="card--title">
             <router-link
-              :to="{path:'/faq/content',query: {title: item.title,content: item.content,username: item.updateUserName,time:item.updateTime,id: item.id}}"
+              :to="{path:'/faq/content',query: {id: item.id}}"
               @click.native="showContent(item)"
+              class="title"
+              :title="item.title"
             >{{item.title}}</router-link>
           </div>
           <div>
@@ -21,7 +27,7 @@
           </div>
           <div class="card--bottom">
             <router-link
-              :to="{path:'/faq/category',query: {value: item.categoryText}}"
+              :to="{path:'/faq/tooler',query: {value: item.categoryText}}"
               class="card--category"
             >{{item.categoryText}}</router-link>
             <span class="card-read__count">
@@ -39,8 +45,10 @@
         </a>
         <div class="card--title">
           <router-link
-              :to="{path:'/faq/content',query: {title: item.title,content: item.content,username: item.updateUserName,time:item.updateTime,id: item.id}}"
+              :to="{path:'/faq/content',query: {id: item.id}}"
               @click.native="showContent(item)"
+              class="title"
+              :title="item.title"
             >{{item.title}}</router-link>
         </div>
         <div>
@@ -52,7 +60,7 @@
         </div>
         <div class="card--bottom">
           <router-link
-              :to="{path:'/faq/category',query: {value: item.categoryText}}"
+              :to="{path:'/faq/tooler',query: {value: item.categoryText}}"
               class="card--category"
             >{{item.categoryText}}</router-link>
           <span class="card-read__count">
@@ -62,7 +70,7 @@
         </div>
       </div>
     </div>
-    <div class="pagination">
+    <div class="pagination" v-if="nowPageList.length != 0">
       <span class="page--size">每页12条</span>
       <el-pagination
         :hide-on-single-page="value"
@@ -81,8 +89,8 @@
 
 <script>
 require("../api/date.js");
-import { FindAll } from "../api/get-datas";
-import bus from "../api/bus";
+import { FindCategoryPage,FindTitlePage } from "../api/get-datas"
+import bus from "../api/bus"
 export default {
   data() {
     return {
@@ -90,49 +98,52 @@ export default {
       nowPageList: [],
       pageCount: 0,
       nowPage: 1,
-      cardListString: ""
+      cardListId: 0,
+      noneText: '',
+      isSreach: 0,
+      titleString: ''
     };
   },
   methods: {
     // 获取数组
-    getDatas() {
+    getDatas(page) {
       bus.$on("str", data => {
-        this.cardListString = data;
-        window.console.log(data);
-      });
-      FindAll().then(res => {
-        let dataList = res.data.data;
-        for (let i in dataList) {
-          if (dataList[i].categoryText == this.cardListString) {
-            this.cardList.push(dataList[i]);
-          }
-        }
-        let type = {};
-        let count = this.cardList.length - 1;
-        for (let i = 0; i < count; i++) {
-          for (let j = 0; j < count - i; j++) {
-            if (this.cardList[j].updateTime < this.cardList[j + 1].updateTime) {
-              type = this.cardList[j + 1];
-              this.cardList[j + 1] = this.cardList[j];
-              this.cardList[j] = type;
+        this.cardListId = data[0];
+        this.isSreach = data[1];
+        if(this.isSreach == 0){
+          this.titleString = '当前分类的FAQ正在维护中';
+          FindCategoryPage(this.cardListId,1,'updateTime',"desc",page,12).then(res => {
+            this.pageCount = res.data.data.totalElements;
+            this.nowPageList = res.data.data.data;
+            for (let i in this.nowPageList) {
+              this.nowPageList[i].updateTime = Date.unix_date(
+                this.nowPageList[i].updateTime / 1000
+              );
+              this.nowPageList[i].contentText = this.getSamllText(
+                this.nowPageList[i].content
+              );
+              if(this.nowPageList[i].titleImgUrl == null){
+                this.nowPageList[i].titleImgUrl = require("../assets/titleImg.svg");
+              }
             }
-          }
-        }
-        for (let i in this.cardList) {
-          this.cardList[i].updateTime = Date.unix_date(
-            this.cardList[i].updateTime / 1000
-          );
-          this.cardList[i].contentText = this.getSamllText(
-            this.cardList[i].content
-          );
-        }
-        this.pageCount = this.cardList.length;
-        let num = 12;
-        for (let i = 0; i < num; i++) {
-          if (i == this.cardList.length) {
-            return;
-          }
-          this.nowPageList.push(this.cardList[i]);
+          });
+        }else if(this.isSreach == 1){
+          this.titleString = '未搜索到相关FAQ';
+          FindTitlePage(this.cardListId,1,'updateTime',"desc",page,12).then(res => {
+            this.pageCount = res.data.data.totalElements;
+            this.nowPageList = res.data.data.data;
+            for (let i in this.nowPageList) {
+              this.nowPageList[i].updateTime = Date.unix_date(
+                this.nowPageList[i].updateTime / 1000
+              );
+              this.nowPageList[i].contentText = this.getSamllText(
+                this.nowPageList[i].content
+              );
+              if(this.nowPageList[i].titleImgUrl == null){
+                this.nowPageList[i].titleImgUrl = require("../assets/titleImg.svg");
+              }
+            }
+          });
         }
       });
     },
@@ -140,15 +151,9 @@ export default {
     changeList(e) {
       this.nowPage = e;
       this.nowPageList = [];
-      window.console.log(e);
-      let num = 12 * this.nowPage;
-      for (let i = num - 12; i < num; i++) {
-        if (i == this.cardList.length) {
-          return;
-        }
-        this.nowPageList.push(this.cardList[i]);
-      }
+      this.getDatas(e);
     },
+    //卡片字段去html标签
     getSamllText(str) {
       str = str.replace(/<br>/gi, "\n");
       str = str.replace(/<xml>[\s\S]*?<\/xml>/gi, "");
@@ -159,9 +164,8 @@ export default {
       return str;
     }
   },
-
   created() {
-    this.getDatas();
+    this.getDatas(1);
   }
 };
 </script>
@@ -177,6 +181,7 @@ export default {
 }
 .card--image {
   width: 100%;
+  height: 109.59px;
 }
 a {
   text-decoration: none;
@@ -222,6 +227,13 @@ a {
   justify-content: center;
   margin-bottom: 20px;
 }
+.title{
+  width: 270px;
+  overflow: hidden;
+  text-overflow: ellipsis; 
+  white-space: nowrap;
+  display: inline-block;
+}
 @media (max-width: 1080px) {
   .pc {
     display: none !important;
@@ -244,6 +256,14 @@ a {
   .page--size {
     display: none;
   }
+  .data--null{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: #aaa;
+    font-size: 12px;
+    padding: 150px 20px;
+  }
 }
 @media (min-width: 1081px) {
   .pc {
@@ -264,6 +284,14 @@ a {
     margin: 7px 10px 0;
     color: #606266;
     font-size: 12px;
+  }
+  .data--null{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: #aaa;
+    font-size: 20px;
+    padding: 150px;
   }
 }
 </style>
